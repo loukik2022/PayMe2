@@ -1,0 +1,230 @@
+### 1. Project Setup: Done
+
+### 2. Backend Development
+- Database Setup: #Done
+  1. Configure MongoDB connection in `src/config/db.js`.
+  2. Test the connection using a dummy endpoint.
+
+- Models: #Done
+  1. Define `User`, `Subscrition`,  and `Transaction` models Schema.
+  2. Test above by insertion - deletion
+
+- Authentication:
+  1. Set up `express-session` for session-based authentication in `app.js`.
+  2. Create routes and logic for user registration and login (`src/routes/authRoutes.js` and `src/controllers/authController.js`).
+
+- Plan Management:
+  1. Implement CRUD operations for SaaS plans (`src/controllers/planController.js` and `src/routes/planRoutes.js`).
+
+- Cart and Orders:
+  1. Add cart management logic (`src/controllers/orderController.js`).
+  2. Set up Stripe payment flow in `src/services/stripeService.js`.
+
+- Middleware: Authorization + Verfification + Validation
+  1. Implement `authMiddleware` to check user roles.
+  2. Add error-handling middleware.
+
+- API Integration:
+  1. Test backend endpoints with Postman.
+
+### 3. Frontend Development
+- Routing:
+  1. Set up React Router for navigation between pages (`LandingPage`, `LoginPage`, `AdminPage`, etc.).
+
+- Authentication:
+  1. Build registration and login forms (`src/components/auth/`).
+  2. Manage user sessions using `AuthContext`.
+
+- Plan Display:
+  1. Create components to display plans (`PlanList` and `PlanDetails`).
+  2. Fetch plan data from the backend using `planApi`.
+
+- Cart and Checkout:
+  1. Implement cart functionality with `CartContext` and `Cart` component.
+  2. Integrate Stripe checkout in `CheckoutPage`.
+
+- Dashboards:
+  1. Build `SuperAdminDashboard` and `AdminDashboard` components.
+  2. Implement logic for managing users and plans.
+
+- Styling:
+  1. Create global styles (`styles.css`) and add responsive design.
+
+### 4. Stripe Integration
+- Backend:
+  1. Configure Stripe API in `src/config/stripe.js`.
+  2. Add webhook handlers in `stripeService.js` for payment success and failure.
+
+- Frontend:
+  1. Set up Stripe checkout form in `CheckoutPage`.
+  2. Test with Stripe's test card details.
+
+### 5. Testing and Debugging
+- Backend:
+  1. Write unit tests for controllers and services.
+  2. Use tools like Postman or Insomnia to test API endpoints.
+
+- Frontend:
+  1. Test all user flows: registration, login, plan selection, cart management, checkout, and dashboards.
+  2. Debug and fix layout or logic issues.
+
+### 6. Deployment
+- Backend:
+  1. Deploy to a cloud service (e.g., AWS, Heroku).
+  2. Use environment variables for sensitive information.
+
+- Frontend:
+  1. Deploy using services like Netlify or Vercel.
+  2. Update API base URLs for production.
+
+- Database:
+  1. Use MongoDB Atlas for hosting the database.
+
+### 7. Final QA and Documentation
+- Perform end-to-end testing in the production environment.
+- Document API endpoints, project structure, and setup instructions in `README.md`.
+
+
+
+### Design Decision Questions for the Project  
+
+### Backend Design Decisions
+1. Database Structure:   MongoDB
+   - How should the schema be designed for SaaS plans, users, and orders to support scalability and flexibility?
+   - Should relationships between entities (e.g., users and orders) be embedded or referenced in MongoDB? 
+
+MongoDB
+- no normalization as in RDBMS
+- flexible schema design (no tabular schema), can implement
+- collection of documents, document based (and add-remove new field whenever we want in document)
+- highly efficient in crud operations
+- moongose (node implementation) to interact (via api) with MongoDB (server)
+
+decide fields in schema
+
+
+ 
+2. Authorization
+   - Should session-based authorization, or would JWT-based authorizationter scalability?   JWT + store user-admin role in MongoDB
+   - How should middleware be implemented to differentiate between Super Admin, Admin, and User roles?  JWT Middleware with different routes
+   - What specific permissions should each role have?
+        1.  Admin:
+        Key Responsibilities: Oversee the SaaS system, manage plans, and monitor organizations.
+        Permissions:
+            Add, edit, delete SaaS plans.
+            Assign roles to user
+            Manage the organization’s current plan and billing history.
+            Monitor usage metrics for organizations and users.
+
+        3. User:
+        Key Responsibilities: Utilize the application’s services under their assigned role.
+        Permissions:
+            Access the purchased SaaS plan features.
+            View their account information and activity logs.
+            View their organization’s current plan but without edit rights.
+
+   - How will password hashing and user roles be implemented securely? #TODO
+
+4. Error Handling:  
+   - What strategy should be used for centralized error handling in the backend?  Centralized error middlewares
+   - How should validation errors and payment errors be surfaced to the frontend?  inline error messages
+
+3. Stripe Integration:  #TODO
+   - Should Stripe events be handled synchronously or via webhooks?  Webhooks: HTTPS + signing the message
+   - How will failed or incomplete payments be managed in the system?
+     Situation: Due to power failuer, or client connection lost during transaction: 
+        payment is cancelled on Stripe’s end due to the interruption
+        but how it should be reflected to client ->
+
+        - synchronous: manually user cancels the transaction when they noticed the payment failed
+        - asynchronous: 
+            Webhook Triggered: Stripe sends a webhook event to server indicating  payment cancellation.
+            Server Updates Status: Server processes the webhook, updates the transaction status in the database, and optionally sends a notification to the client.
+   
+   - What if attackers send the stripe msg to our server ? Verify using hash of Stripe’s signature and secret key (client unreliable)
+
+5. API Structure:  
+   - Should REST APIs be used, or would a GraphQL API be more appropriate for this use case?  REST API for now (#TODO GraphQL)
+   - How will API versioning be handled to support future updates? #TODO
+
+7. Scalability:  #TODO
+   - Should microservices be used to handle different domains (e.g., payments, plans, user management), or is a monolithic backend sufficient initially?  
+   - What caching mechanism (e.g., Redis) should be employed for frequent queries?
+
+---
+
+### Frontend Design Decisions
+1. Component Structure:  
+   - How should components be modularized to balance reusability and separation of concerns?  
+   - Should state management be handled via Context API or a library like Redux?
+
+2. Routing and Navigation:  
+   - Should user roles dictate the routing structure (e.g., separate dashboards for Super Admin and Admin)?  
+   - How should unauthenticated users be redirected to the login page?
+
+3. Payment UI:  
+   - Should the Stripe Checkout UI be embedded in the app, or should users be redirected to Stripe’s hosted checkout page?  
+   - How will real-time feedback (e.g., loading states, errors) be provided during the payment process?
+
+4. Plan and Cart Display:  
+   - What is the best way to structure the data flow for browsing plans and managing the cart?  
+   - Should data be fetched once on the dashboard load or cached locally to reduce API calls?
+
+5. User Experience:  
+   - How should error messages be presented to users (e.g., toast notifications vs. inline feedback)?  
+   - What responsive design framework (e.g., Tailwind CSS, Material UI) should be used?
+
+---
+
+### Stripe Integration Design Decisions
+1. Webhooks and Payment Flow:  
+   - How will the system handle webhook retries in case of transient failures?  
+   - Should payments be marked as pending until confirmed by Stripe, or assume success immediately after checkout?
+
+2. Test and Live Mode Separation:  
+   - How will test and production Stripe environments be managed (e.g., separate keys, environments)?  
+   - What safeguards will prevent accidental use of production keys during development?
+
+---
+
+### General Design Decisions
+1. Deployment:  
+   - What hosting platforms will be used for backend (e.g., AWS, Heroku) and frontend (e.g., Vercel, Netlify)?  
+   - How will CI/CD pipelines be set up for smooth deployments?
+
+2. Logging and Monitoring:  
+   - What logging tools (e.g., Winston, Morgan) will be used in the backend?  
+   - How will application performance and Stripe-related events be monitored?
+
+3. Scalability and Maintainability:  
+   - What naming conventions and folder structures will best support long-term maintainability?  
+   - Should a centralized configuration management tool be adopted for environment variables?
+
+4. Testing:  
+   - What types of tests (e.g., unit tests, integration tests) will be prioritized?  
+   - What testing tools (e.g., Jest, Postman) will be used for backend and frontend?  
+
+5. Documentation:  
+   - Should the API documentation be autogenerated (e.g., using Swagger)?  
+   - How will usage guidelines for admins and users be documented and maintained?  
+
+These questions can guide discussions with stakeholders and help align the design choices with the project requirements and constraints.
+
+
+Encryption
+Definition: Converts readable data (plaintext) into an unreadable format (ciphertext) using algorithms and keys.
+Reversibility: Requires a decryption key to revert ciphertext back to plaintext.
+Use Cases: Ideal for data that needs to be accessed and processed in its original form.
+Types:
+   Symmetric Encryption: Same key for encryption and decryption.
+   Asymmetric Encryption: Different keys for encryption (public key) and decryption (private key).
+Security: Protects data during transmission and storage but can be vulnerable if keys are compromised.
+
+Tokenization
+Definition: Replaces sensitive data with non-sensitive tokens that have no exploitable value.
+Reversibility: Tokens can only be mapped back to the original data via a secure tokenization system.
+Use Cases: Suitable for data that rarely needs to be accessed in its original form, such as credit card numbers.
+Types:
+   Traditional Tokenization: Uses a centralized token vault to store the mapping between tokens and original data.
+   Vaultless Tokenization: Generates tokens without storing the original data in a central location.
+Security: Reduces the risk of data breaches as tokens are meaningless outside the tokenization system.
