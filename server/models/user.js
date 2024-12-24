@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
         required: true,
     },
@@ -10,19 +10,21 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true,
     },
-    password: {
+    password: { // hash (encrypted)
         type: String,
         required: true,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
+    role: {
+        type: String,
+        enum: ['admin', 'user'],
+        default: 'user',
     },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-    },
-});
+    refreshToken: { 
+        type: String, 
+    }
+},
+    { timestamps: true }
+);
 
 export const User = mongoose.model('User', userSchema)
 

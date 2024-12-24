@@ -1,0 +1,161 @@
+### 1. Sign Up (User Registration)
+
+URL: `POST /api/user/signup`
+
+Steps:
+1. Open Postman.
+2. Select `POST` from the HTTP method dropdown.
+3. Enter the URL: `http://localhost:8000/api/user/signup`
+4. Go to the `Body` tab.
+5. Select `raw` and choose `JSON` from the dropdown.
+6. Enter the user data in JSON format. For example:
+    ```json
+    {
+      "username": "testuser",
+      "email": "testuser@example.com",
+      "password": "password123"
+    }
+    ```
+7. Click `Send`.
+
+Expected Response:
+```json
+{
+  "message": "User was registered successfully!"
+}
+```
+
+### 2. Sign In (User Login)
+
+URL: `POST /api/user/signin`
+
+Steps:
+1. Open a new tab in Postman.
+2. Select `POST` from the HTTP method dropdown.
+3. Enter the URL: `http://localhost:8000/api/user/signin`
+4. Go to the `Body` tab.
+5. Select `raw` and choose `JSON` from the dropdown.
+6. Enter the user credentials in JSON format. For example:
+    ```json
+    {
+      "username": "testuser",
+      "password": "password123"
+    }
+    ```
+7. Click `Send`.
+
+Expected Response:
+```json
+{
+  "id": "user_id",
+  "username": "testuser",
+  "email": "testuser@example.com",
+  "roles": "user",
+  "accessToken": "your_access_token"
+}
+```
+
+### 3. Access Protected Route (User Content)
+
+URL: `GET /api/user/`
+
+Steps:
+1. Open a new tab in Postman.
+2. Select `GET` from the HTTP method dropdown.
+3. Enter the URL: `http://localhost:8000/api/user/`
+4. Go to the `Headers` tab.
+5. Add a new header:
+    - Key: `Authorization`
+    - Value: `Bearer your_access_token` (replace `your_access_token` with the actual token received from the sign-in response)
+6. Click `Send`.
+
+Expected Response:
+```json
+"Welcome to the User Homepage!"
+```
+
+### 5. Refresh Token
+
+URL: `POST /api/user/refreshToken`
+
+Steps:
+1. Open a new tab in Postman.
+2. Select `POST` from the HTTP method dropdown.
+3. Enter the URL: `http://localhost:8000/api/user/refreshToken`
+4. Go to the `Body` tab.
+5. Select `raw` and choose `JSON` from the dropdown.
+6. Enter the refresh token in JSON format. For example:
+    ```json
+    {
+      "refreshToken": "your_refresh_token"
+    }
+    ```
+7. Click `Send`.
+
+Expected Response:
+```json
+{
+  "accessToken": "new_access_token"
+}
+```
+
+### 6. Sign Out
+
+URL: `POST /api/user/signout`
+
+Steps:
+1. Open a new tab in Postman.
+2. Select `POST` from the HTTP method dropdown.
+3. Enter the URL: `http://localhost:8000/api/user/signout`
+4. Go to the `Body` tab.
+5. Select `raw` and choose `JSON` from the dropdown.
+6. Enter the refresh token in JSON format. For example:
+    ```json
+    {
+      "refreshToken": "your_refresh_token"
+    }
+    ```
+7. Click `Send`.
+
+Expected Response:
+```json
+{
+  "message": "User logged out successfully!"
+}
+```
+
+### 7. Get All Users (Admin Only)
+
+URL: `GET /api/user/allUser`
+
+Steps:
+1. Open a new tab in Postman.
+2. Select `GET` from the HTTP method dropdown.
+3. Enter the URL: `http://localhost:8000/api/user/allUser`
+4. Go to the `Headers` tab.
+5. Add a new header:
+    - Key: `Authorization`
+    - Value: `Bearer your_access_token` (replace `your_access_token` with the actual token received from the sign-in response)
+6. Click `Send`.
+
+Expected Response:
+A list of users (excluding their passwords):
+```json
+[
+  {
+    "_id": "user_id_1",
+    "username": "testuser1",
+    "email": "testuser1@example.com",
+    "role": "user",
+    // Other fields...
+  },
+  {
+    "_id": "user_id_2",
+    "username": "testuser2",
+    "email": "testuser2@example.com",
+    "role": "admin",
+    // Other fields...
+  },
+  // More users...
+]
+```
