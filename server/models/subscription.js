@@ -14,6 +14,9 @@ const subscriptionSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    description: {
+        type: String,
+    },
     billingCycle: {
         type: String,
         enum: ['monthly', 'yearly'],
@@ -31,7 +34,12 @@ const subscriptionSchema = new mongoose.Schema({
         type: String,
         enum: ['active', 'inactive', 'cancelled'],
         default: 'active',
+        required: true,
     },
-});
+},
+    {
+        timestamps: true,
+    }
+);
 
 export const Subscription = mongoose.model('Subscription', subscriptionSchema);

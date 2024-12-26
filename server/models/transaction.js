@@ -18,6 +18,7 @@ const transactionSchema = new mongoose.Schema({
     currency: {
         type: String,
         default: 'Rs',
+        required: true,
     },
     status: {
         type: String,
@@ -26,12 +27,11 @@ const transactionSchema = new mongoose.Schema({
     },
     paymentMethod: {
         type: String,
-        required: true,
     },
-    transactionDate: {
-        type: Date,
-        default: Date.now,
-    },
-});
+},
+    {
+        timestamps: true,
+    }
+);
 
 export const Transaction = mongoose.model('Transaction', transactionSchema);

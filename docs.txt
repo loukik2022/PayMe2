@@ -9,6 +9,10 @@
   1. Define `User`, `Subscrition`,  and `Transaction` models Schema.
   2. Test above by insertion - deletion
 
+Design Q: whether to store transaction id of a particular user in user schema too?
+If want to retrieve all transactions for a user, can query the transaction collection using the userID. 
+MongoDB's indexing makes this query efficient without needing to store a list of transaction IDs in the user document.
+
 Problem: Incorrect db connection string (pass db name two times, one in env and one in index.js)
 Solution: Remove the db name from the index.js file and use only the env variable for db connection
 
@@ -16,6 +20,8 @@ Solution: Remove the db name from the index.js file and use only the env variabl
 Source: https://www.bezkoder.com/node-js-mongodb-auth-jwt/
   1. Create routes and logic for user registration and login.
   2. Use jwt token for user authorization
+  3. Implement `authMiddleware` to check user roles.
+  4. Add error-handling middleware.
 
 Middlewares:
 To verify a Signup action, we need 2 functions:
@@ -68,19 +74,84 @@ Problem: Admin role was saved as user (default) in db in auth middleware
 Test using Postman for different routes
 
 
-- Plan Management:
+- Transactions logic and save in db:
+  1. Add transaction management logic 
+  2. Implement CRUD operations for transaction history
+
+
+Set Up Stripe # DONE
+   - Install Stripe Node.js library: `npm install stripe`
+   - Configure Stripe with your secret key.
+
+Transaction Controller Functions
+   - Create Transaction
+   - Get User Transaction
+   - Update Transaction
+   - Delete Transaction
+
+FUNCTION createTransaction(req, res)
+    EXTRACT data FROM req.body
+    IF data IS VALID
+        CREATE transaction
+        SAVE transaction
+        RETURN success response
+    ELSE
+        RETURN error response
+
+FUNCTION updateTransaction(req, res)
+    EXTRACT transactionId FROM req.params
+    EXTRACT updates FROM req.body
+    FIND transaction BY transactionId
+    IF transaction EXISTS
+        UPDATE transaction WITH updates
+        SAVE transaction
+        RETURN success response
+    ELSE
+        RETURN error response
+
+FUNCTION deleteTransaction(req, res)
+    EXTRACT transactionId FROM req.params
+    FIND and DELETE transaction BY transactionId
+    IF transaction EXISTS
+        RETURN success response
+    ELSE
+        RETURN error response
+
+FUNCTION getUserTransaction(req, res)
+    EXTRACT userId FROM req.params
+    FIND transactions BY userId
+    IF transactions FOUND
+        RETURN transactions
+    ELSE
+        RETURN error response
+
+Transaction Routes
+| Methods   | Urls                       | Actions                  |
+| --------- | -------------------------- | ------------------------ |
+| POST      | /api/transactions          | Create Transaction       |
+| GET       | /api/transactions/:userId  | Get Transaction by User  |
+| PATCH     | /api/transactions/:id      | Update Transaction       |
+| DELETE    | /api/transactions/:id      | Delete Transaction       |
+
+Integrate Middleware
+   - Use middleware for authentication and authorization.
+   - Implement validation middleware for request data.
+
+Test the Endpoints
+   - Use Postman to test each endpoint.
+   - Verify CRUD operations and handle edge cases.
+
+Problems: validation middleware contains function that check for all missing field,
+          but patch does not need all fileds in its request
+Soltuin: spilt validation middleware, one for create, one for update, one for delete and use seperately
+
+
+- API Integration: #Done
+  1. Test backend endpoints with Postman.
+
+- Plan Management: # TODO
   1. Implement CRUD operations for SaaS plans (`src/controllers/planController.js` and `src/routes/planRoutes.js`).
 
-- Cart and Orders:
-  1. Add cart management logic (`src/controllers/orderController.js`).
-  2. Set up Stripe payment flow in `src/services/stripeService.js`.
-
-- Middleware: Authorization + Verfification + Validation
-  1. Implement `authMiddleware` to check user roles.
-  2. Add error-handling middleware.
-
-- API Integration:
-  1. Test backend endpoints with Postman.
 
 ### 3. Frontend Development
 - Routing:
@@ -157,8 +228,14 @@ MongoDB
 
 decide fields in schema
 
+WHY MongoDB?
+Dynamic Data Handling: 
+   Payment gateway responses from Stripe often contain dynamic metadata (e.g., webhook payloads). 
+   MongoDB's schema-less nature allows for easy storage and querying of such data without strict constraints.
+   
+Integration with JWT Sessions
 
- 
+
 2. Authorization
    - Should session-based authorization, or would JWT-based authorizationter scalability?   JWT + store user-admin role in MongoDB
    - How should middleware be implemented to differentiate between Super Admin, Admin, and User roles?  JWT Middleware with different routes

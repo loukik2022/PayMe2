@@ -2,32 +2,28 @@ project-root/
 ├── server/
 │   ├── src/
 │   │   ├── config/
-│   │   │   ├── db.js              # MongoDB connection setup - Done
-│   │   │   ├── stripe.js          # Stripe configuration and setup
-│   │   │   └── env.js             # Environment variable configuration
+│   │   │   ├── db.js                     # MongoDB connection setup - Done
+│   │   │   ├── stripe.js                 # Stripe configuration and setup
+│   │   │   └── env.js                    # Environment variable configuration
 │   │   ├── controllers/
-│   │   │   ├── authController.js  # Handles authentication (login, registration) - Done
-│   │   │   ├── planController.js  # CRUD operations for SaaS plans
-│   │   │   └── orderController.js # Handles cart and order processing
+│   │   │   ├── authController.js         # Handles authentication (login, registration) - Done
+│   │   │   ├── subscriptionController.js # CRUD operations for SaaS Subscriptions
+│   │   │   └── transactionController.js  # Handles cart and transaction processing
 │   │   ├── middlewares/
-|   |   |   ├── authJWT.js         # Authentication & Authorization middleware - Done
-│   │   │   ├── verifySignUp.js  # Verify duplicate credentials middleware
-│   │   │   └── errorHandler.js    # Global error handler
+|   |   |   ├── authJWT.js                # Authentication & Authorization middleware - Done
+│   │   │   ├── verifySignUp.js           # Verify duplicate credentials middleware - Done
+│   │   │   └── errorHandler.js           # Global error handler
 │   │   ├── models/
-│   │   │   ├── Plan.js            # SaaS Plan model - Done
-│   │   │   ├── User.js            # User model with roles - Done
-│   │   │   └── Order.js           # Order model for purchases - Done     
+│   │   │   ├── subscription.js           # SaaS Subscription model - Done
+│   │   │   ├── user.js                   # User model with roles - Done
+│   │   │   └── transaction.js            # transaction model for purchases - Done     
 │   │   ├── routes/
-│   │   │   ├── authRoutes.js      # Routes for authentication - Done
-│   │   │   ├── planRoutes.js      # Routes for SaaS plans
-│   │   │   ├── userRoutes.js      # Routes for user management
-│   │   │   └── orderRoutes.js     # Routes for cart and order management
-│   │   ├── services/
-│   │   │   ├── stripeService.js   # Handles Stripe API calls and webhook logic
-│   │   │   └── authService.js     # Handles token creation and session management
-│   │   └── index.js               # Entry point for the backend server, express app setup and middleware
-│   ├── package.json               # Backend dependencies and scripts
-│   └── .env                       # Backend environment variables
+│   │   │   ├── subscriptionRoutes.js     # Routes for SaaS Subscriptions
+│   │   │   ├── userRoutes.js             # Routes for user management
+│   │   │   └── transactionRoutes.js      # Routes for cart and transaction management
+│   │   └── index.js                      # Entry point for the backend server, express app setup and middleware
+│   ├── package.json                      # Backend dependencies and scripts
+│   └── .env                              # Backend environment variables
 |
 ├── client/
 │   ├── public/
@@ -35,22 +31,21 @@ project-root/
 │   ├── src/
 │   │   ├── api/
 │   │   │   ├── authApi.js         # API calls for authentication
-│   │   │   ├── planApi.js         # API calls for SaaS plans
+│   │   │   ├── SubscriptionApi.js         # API calls for SaaS Subscriptions
 │   │   │   ├── userApi.js         # API calls for user management
-│   │   │   └── orderApi.js        # API calls for orders and checkout
+│   │   │   └── transactionApi.js        # API calls for transactions and checkout
 │   │   ├── components/
 │   │   │   ├── auth/
-│   │   │   │   ├── LoginForm.jsx
-│   │   │   │   └── RegisterForm.jsx
+│   │   │   │   ├── signinForm.jsx
+│   │   │   │   └── signupForm.jsx
 │   │   │   ├── dashboard/
-│   │   │   │   ├── SuperAdminDashboard.jsx
 │   │   │   │   └── AdminDashboard.jsx
-│   │   │   ├── orders/
+│   │   │   ├── transactions/
 │   │   │   │   ├── Cart.jsx
-│   │   │   │   └── OrderHistory.jsx
-│   │   │   ├── plans/
-│   │   │   │   ├── PlanList.jsx
-│   │   │   │   └── PlanDetails.jsx
+│   │   │   │   └── transactionHistory.jsx
+│   │   │   ├── Subscriptions/
+│   │   │   │   ├── SubscriptionList.jsx
+│   │   │   │   └── SubscriptionDetails.jsx
 │   │   │   └── shared/
 │   │   │       ├── Navbar.jsx
 │   │   │       └── Footer.jsx
@@ -75,6 +70,161 @@ project-root/
 ├── .gitignore                     # Files and folders to ignore in git
 ├── README.md                      # Project documentation
 └── package.json                   # Root package.json for shared scripts
+
+
+
+
+
+### Step-by-Step Plan for PayMe Project
+
+---
+
+#### Phase 1: Backend Development
+1. Complete Pending Configuration Files
+   - Finalize `stripe.js`:
+     - Set up Stripe API keys.
+     - Configure basic methods for payment processing and webhooks.
+
+   - Finalize `env.js`:
+     - Ensure secure handling of all environment variables, including JWT secrets, database URIs, and Stripe keys.
+
+2. Implement Controllers
+   - Plan Controller (`planController.js`):
+     - CRUD operations for SaaS plans.
+     - Include validation logic for user roles (e.g., admin access).
+     - Paginate results for listing plans.
+
+   - Transaction Controller (`transactionController.js`):
+     - Handle cart operations (add, remove, clear items).
+     - Process transactions using Stripe services.
+     - Maintain transaction history in the database.
+
+3. Develop Middleware
+   - Finalize `errorHandler.js`:
+     - Implement centralized error handling.
+     - Log errors and return user-friendly messages.
+
+4. Complete Services
+   - Stripe Service (`stripeService.js`):
+     - Integrate payment intent creation.
+     - Implement webhook listeners for events like payment success or failure.
+
+   - Auth Service (`authService.js`):
+     - Add methods for token validation and user session management.
+
+5. Implement Routes
+   - Complete the following route files:
+     - `planRoutes.js`
+     - `userRoutes.js`
+     - `transactionRoutes.js`
+
+6. Testing Backend
+   - Write test cases for all controllers, middleware, and services.
+   - Use a tool like Jest or Mocha.
+
+7. Integrate Backend
+   - Finalize `index.js` to ensure smooth operation with middleware, routes, and MongoDB connections.
+
+---
+
+#### Phase 2: Frontend Development
+1. Set Up API Folder
+   - Implement pending API modules:
+     - `planApi.js`
+     - `transactionApi.js`
+   - Test API integrations with the backend.
+
+2. Build Components
+   - Auth Components:
+     - Complete `signinForm.jsx` and `signupForm.jsx` with form validation.
+     - Use API methods from `authApi.js`.
+
+   - Plan Components:
+     - Build `planList.jsx` for displaying available plans.
+     - Build `planDetails.jsx` for plan-specific information.
+
+   - Transaction Components:
+     - Implement `Cart.jsx` for displaying and managing cart items.
+     - Implement `transactionHistory.jsx` to show user purchase history.
+
+3. Shared Components
+   - Create reusable UI components like `Navbar.jsx` and `Footer.jsx`.
+   - Ensure they are styled properly and responsive.
+
+4. Implement Contexts
+   - Finalize `AuthContext.js` and `CartContext.js` to manage global state.
+
+5. Custom Hooks
+   - Develop and test `useAuth.js` and `useCart.js` for shared logic.
+
+6. Develop Pages
+   - Complete high-level pages (`LandingPage.jsx`, `AdminPage.jsx`, etc.).
+   - Integrate components and contexts.
+
+7. Styling
+   - Create a unified design in `styles.css`.
+   - Use a CSS framework (e.g., Tailwind, Bootstrap) for responsiveness if necessary.
+
+---
+
+#### Phase 3: Integration
+1. Setup Proxy
+   - Ensure `setupProxy.js` properly routes API requests during local development.
+
+2. Connect Frontend and Backend
+   - Test all API integrations.
+   - Ensure proper error handling on both client and server sides.
+
+3. End-to-End Testing
+   - Use Cypress or a similar tool to test the user journey (login, plan purchase, etc.).
+
+---
+
+#### Phase 4: Deployment
+1. Environment Preparation
+   - Set up `.env` files for production.
+   - Optimize React build and configure Express to serve the client app.
+
+2. Backend Deployment
+   - Deploy to a cloud platform (AWS, GCP, Azure, or Heroku).
+   - Set up a CI/CD pipeline.
+
+3. Frontend Deployment
+   - Deploy the React app (e.g., Netlify, Vercel).
+   - Configure domain and SSL.
+
+4. Monitor and Maintain
+   - Implement logging and monitoring tools (e.g., LogRocket, Sentry).
+   - Regularly review and update dependencies.
+
+---
+
+#### Phase 5: Documentation and Feedback
+1. Documentation
+   - Write comprehensive documentation in `README.md`.
+   - Include setup, usage, and contribution guidelines.
+
+2. Feedback and Iteration
+   - Share the deployed project with stakeholders.
+   - Gather feedback and iterate based on priority.
+
+---
+
+Would you like a more detailed task breakdown for any specific part?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 server setup:

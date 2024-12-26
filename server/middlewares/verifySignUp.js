@@ -8,7 +8,7 @@ To verify a Signup action, we need 2 functions:
 
 const allowedRoles = ['admin', 'user']
 
-const checkUserOrEmailExist = async (req, res, next) => {
+const checkDuplicateUserOrEmailExist = async (req, res, next) => {
     try {
         // Check Username
         let user = await User.findOne({ username: req.body.username });
@@ -42,4 +42,4 @@ const checkRoleExist = (req, res, next) => {
     next();
 };
 
-export { checkUserOrEmailExist, checkRoleExist };
+export { checkDuplicateUserOrEmailExist, checkRoleExist };
