@@ -9,9 +9,7 @@ import stripeService from "./stripeService.js"
 import userRoutes from "./routes/userRoutes.js"
 import transactionRoutes from "./routes/transactionRoutes.js"
 
-dotenv.config({
-    path: './.env'
-})
+dotenv.config()
 
 const app = express()
 

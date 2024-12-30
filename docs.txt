@@ -84,10 +84,10 @@ Set Up Stripe # DONE
    - Configure Stripe with your secret key.
 
 Transaction Controller Functions
-   - Create Transaction
-   - Get User Transaction
-   - Update Transaction
-   - Delete Transaction
+   - Create Transaction -> A user purchases a subscription.
+   - Update Transaction -> Updating the status of a transaction (from pending to success or failed).
+   - Delete Transaction -> Removing a transaction record (in case of a error)
+   - Get User Transaction (admin) -> Retrieving transaction details for a user. 
 
 FUNCTION createTransaction(req, res)
     EXTRACT data FROM req.body

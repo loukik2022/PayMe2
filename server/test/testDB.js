@@ -3,6 +3,8 @@ import { User } from '../models/user.js';
 import { Transaction } from '../models/transaction.js';
 import { Subscription } from '../models/subscription.js';
 
+// Test all mongo db schema
+
 // MongoDB connection
 const uri = 'mongodb://localhost:27017/PayMe';
 

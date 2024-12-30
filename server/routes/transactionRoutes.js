@@ -11,12 +11,15 @@ import {
     checkSubscriptionExists, 
     validateAmountStatus
 } from '../middlewares/verifyTransaction.js';
+import { checkToken, checkRole } from "../middlewares/verifyJWT.js";
 
 const router = express.Router();
 
 router.post('/create', [checkMissingFields, checkUserExists, checkSubscriptionExists, validateAmountStatus], createTransaction);
 router.patch('/:transactionId', validateAmountStatus, updateTransaction);
 router.delete('/:transactionId', deleteTransaction);
-router.get('/:userId', checkUserExists, getUserTransaction);
+
+// admin
+router.get('/:userId', [checkToken, checkRole('admin'), checkUserExists], getUserTransaction);
 
 export default router;  

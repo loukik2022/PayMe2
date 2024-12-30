@@ -3,24 +3,23 @@ project-root/
 │   ├── src/
 │   │   ├── config/
 │   │   │   ├── db.js                     # MongoDB connection setup - Done
-│   │   │   ├── stripe.js                 # Stripe configuration and setup
+│   │   │   ├── stripe.js                 # Stripe configuration and setup - Done
 │   │   │   └── env.js                    # Environment variable configuration
 │   │   ├── controllers/
 │   │   │   ├── authController.js         # Handles authentication (login, registration) - Done
 │   │   │   ├── subscriptionController.js # CRUD operations for SaaS Subscriptions
-│   │   │   └── transactionController.js  # Handles cart and transaction processing
+│   │   │   └── transactionController.js  # Handles cart and transaction processing - Done
 │   │   ├── middlewares/
 |   |   |   ├── authJWT.js                # Authentication & Authorization middleware - Done
 │   │   │   ├── verifySignUp.js           # Verify duplicate credentials middleware - Done
-│   │   │   └── errorHandler.js           # Global error handler
 │   │   ├── models/
 │   │   │   ├── subscription.js           # SaaS Subscription model - Done
 │   │   │   ├── user.js                   # User model with roles - Done
 │   │   │   └── transaction.js            # transaction model for purchases - Done     
 │   │   ├── routes/
 │   │   │   ├── subscriptionRoutes.js     # Routes for SaaS Subscriptions
-│   │   │   ├── userRoutes.js             # Routes for user management
-│   │   │   └── transactionRoutes.js      # Routes for cart and transaction management
+│   │   │   ├── userRoutes.js             # Routes for user management - Done
+│   │   │   └── transactionRoutes.js      # Routes for cart and transaction management - Done
 │   │   └── index.js                      # Entry point for the backend server, express app setup and middleware
 │   ├── package.json                      # Backend dependencies and scripts
 │   └── .env                              # Backend environment variables
