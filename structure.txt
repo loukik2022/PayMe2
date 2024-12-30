@@ -29,14 +29,14 @@ project-root/
 │   │   └── index.html             # Main HTML template
 │   ├── src/
 │   │   ├── api/
-│   │   │   ├── authApi.js         # API calls for authentication
+│   │   │   ├── authApi.js         # API calls for authentication    # Done
 │   │   │   ├── SubscriptionApi.js         # API calls for SaaS Subscriptions
 │   │   │   ├── userApi.js         # API calls for user management
 │   │   │   └── transactionApi.js        # API calls for transactions and checkout
 │   │   ├── components/
 │   │   │   ├── auth/
-│   │   │   │   ├── signinForm.jsx
-│   │   │   │   └── signupForm.jsx
+│   │   │   │   ├── signinForm.jsx  # Done
+│   │   │   │   └── signupForm.jsx  # Done
 │   │   │   ├── dashboard/
 │   │   │   │   └── AdminDashboard.jsx
 │   │   │   ├── transactions/
