@@ -20,35 +20,39 @@ const Signin = () => {
         try {
             const data = await signin(formData);
             console.log('Signin successful:', data);
-            
+
             // Store the token in localStorage
             localStorage.setItem('accessToken', data.accessToken);
             localStorage.setItem('refreshToken', data.refreshToken);
 
             navigate('/landing');
         } catch (err) {
-            setError(err.message); 
+            setError(err.message);
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-            />
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-            />
+            <div>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
             <button type="submit">Sign In</button>
             {error && <p>{error}</p>}
         </form>

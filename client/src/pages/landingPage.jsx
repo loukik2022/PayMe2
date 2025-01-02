@@ -1,63 +1,67 @@
 const Subscription = () => {
-  const plans = [
+  const subs = [
     {
-      name: 'Basic',
-      price: '$9.99/month',
-      features: 'Access to basic features, Ad-supported',
-      buttonText: 'Subscribe Now',
+      name: "Basic Plan",
+      price: "₹10,000",
+      description: "Ideal for single small project with essential integrations and basic support.",
+      features: [
+        "One project",
+        "One database server integration",
+        "One external API service integration",
+        "Basic support"
+      ],
+      buttonText: "Get Started"
     },
     {
-      name: 'Pro',
-      price: '$19.99/month',
-      features: 'Access to all features, Ad-free, Priority Support',
-      buttonText: 'Subscribe Now',
+      name: "Standard Plan",
+      price: "₹1,00,0000",
+      description: "Perfect for growing businesses with multiple projects and priority support.",
+      features: [
+        "Up to five projects",
+        "Two database server integrations",
+        "Three external API service integrations",
+        "Priority support",
+        "Access to standard features"
+      ],
+      buttonText: "Get Started"
     },
     {
-      name: 'Enterprise',
-      price: 'Custom Pricing',
-      features: 'Custom solutions, Dedicated Support, Advanced Features',
-      buttonText: 'Contact Us',
-    },
+      name: "Premium Plan",
+      price: "₹25,00,000",
+      description: "Comprehensive solution for unlimited projects and premium features with dedicated support.",
+      features: [
+        "Unlimited projects",
+        "Unlimited database server integrations",
+        "Unlimited external API service integrations",
+        "Access to all premium features",
+        "Available physically 8 hours per day"
+      ],
+      buttonText: "Get Started"
+    }
   ];
 
-  return (
-    <div>
-      {/* Hero Section */}
-      <section style={{ backgroundColor: '#6200ea', color: 'white', padding: '50px 20px', textAlign: 'center' }}>
-      </section>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Purchase processing...");
 
-      {/* Pricing Section */}
-      <section style={{ display: 'flex', justifyContent: 'space-around', padding: '50px 20px', backgroundColor: 'white' }}>
-        {plans.map((plan, index) => (
-          <div
-            key={index}
-            style={{
-              backgroundColor: '#f4f4f9',
-              padding: '20px',
-              borderRadius: '10px',
-              textAlign: 'center',
-              width: '30%',
-            }}
-          >
-            <h2 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{plan.name}</h2>
-            <p style={{ fontSize: '2em', fontWeight: 'bold', color: '#6200ea', marginBottom: '10px' }}>{plan.price}</p>
-            <p style={{ fontSize: '1.2em', marginBottom: '20px' }}>{plan.features}</p>
-            <button
-              style={{
-                backgroundColor: '#ff4081',
-                color: 'white',
-                padding: '10px 20px',
-                border: 'none',
-                borderRadius: '5px',
-                fontSize: '1em',
-                cursor: 'pointer',
-              }}
-            >
-              {plan.buttonText}
-            </button>
-          </div>
-        ))}
-      </section>
+    // send plan detials along with user info to backend
+  };
+
+  return (
+    <div className="subs-container">
+      {subs.map((sub, index) => (
+        <div key={index} className="sub-card">
+          <h2>{sub.name}</h2>
+          <h3>{sub.price}</h3>
+          <p>{sub.description}</p>
+          <button onClick={handleSubmit}>{sub.buttonText}</button>
+          <ul>
+            {sub.features.map((feature, i) => (
+              <li key={i}>{feature}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
 };

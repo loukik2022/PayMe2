@@ -1,11 +1,6 @@
 import mongoose from 'mongoose'
 
 const subscriptionSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-    },
     planName: {
         type: String,
         required: true,
@@ -16,6 +11,12 @@ const subscriptionSchema = new mongoose.Schema({
     },
     description: {
         type: String,
+    },
+    status: {
+        type: String,
+        enum: ['active', 'inactive', 'cancelled'],
+        default: 'active',
+        required: true,
     },
     billingCycle: {
         type: String,
@@ -28,12 +29,6 @@ const subscriptionSchema = new mongoose.Schema({
     },
     endDate: {
         type: Date,
-        default: null, // active subscriptions
-    },
-    status: {
-        type: String,
-        enum: ['active', 'inactive', 'cancelled'],
-        default: 'active',
         required: true,
     },
 },

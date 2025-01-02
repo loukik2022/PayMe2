@@ -22,7 +22,7 @@ const Signup = ({ toggleForm }) => {
             const data = await signup(formData);
             console.log('Signup successful:', data);
 
-            toggleForm();   
+            toggleForm();
         } catch (err) {
             setError(err.message);
         }
@@ -30,30 +30,36 @@ const Signup = ({ toggleForm }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-            />
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-            />
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-            />
+            <div>
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
             <button type="submit">Sign Up</button>
             {error && <p>{error}</p>}
         </form>

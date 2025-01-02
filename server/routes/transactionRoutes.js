@@ -1,21 +1,18 @@
 import express from 'express';
+import { checkToken, checkRole } from "../middlewares/verifyAuth.js";
+import { checkSubscriptionExists } from "../middlewares/verifySubscription.js"
+import { checkTranMissingField, validateAmountStatus} from '../middlewares/verifyTransaction.js';
+import { checkUserExists } from '../middlewares/verifyUser.js'
 import {
     createTransaction,
     updateTransaction,
     deleteTransaction,
     getUserTransaction
 } from '../controllers/transactionController.js';
-import { 
-    checkMissingFields, 
-    checkUserExists, 
-    checkSubscriptionExists, 
-    validateAmountStatus
-} from '../middlewares/verifyTransaction.js';
-import { checkToken, checkRole } from "../middlewares/verifyJWT.js";
 
 const router = express.Router();
 
-router.post('/create', [checkMissingFields, checkUserExists, checkSubscriptionExists, validateAmountStatus], createTransaction);
+router.post('/create', [checkTranMissingField, checkUserExists, checkSubscriptionExists, validateAmountStatus], createTransaction);
 router.patch('/:transactionId', validateAmountStatus, updateTransaction);
 router.delete('/:transactionId', deleteTransaction);
 

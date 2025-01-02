@@ -9,7 +9,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<h1>Welcome to PayMe!</h1>} />
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/landing" element={<Subscription />}></Route>
+                <Route path="/landing" element={<Subscription />} />
                 {/* Other routes */}
             </Routes>
         </Router>

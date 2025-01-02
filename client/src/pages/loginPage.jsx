@@ -25,9 +25,8 @@ const LoginPage = () => {
                     <SigninForm />
                 </>
             )}
-
             {/* Button to toggle forms */}
-            <button onClick={toggleForm}>
+            <button onClick={toggleForm} style={{ marginTop: "20px" }}>
                 {isSignUp ? "Switch to Sign In" : "Switch to Sign Up"}
             </button>
         </div>

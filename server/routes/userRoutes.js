@@ -1,8 +1,12 @@
 import { Router } from 'express';
-import { signup, signin, signout, refreshToken } from "../controllers/authController.js";
-import { checkDuplicateUserOrEmailExist, checkRoleExist } from "../middlewares/verifySignUp.js";
-import { checkToken, checkRole } from "../middlewares/verifyJWT.js";
 import { User } from "../models/user.js";
+import { signup, signin, signout, refreshToken } from "../controllers/authController.js";
+import { 
+    checkToken, 
+    checkRole, 
+    checkDuplicateUserOrEmailExist, 
+    checkRoleExist 
+} from "../middlewares/verifyAuth.js";
 
 const router = Router();
 

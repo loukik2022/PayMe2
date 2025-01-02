@@ -165,11 +165,11 @@ Soltuin: spilt validation middleware, one for create, one for update, one for de
   1. Create components to display plans (`PlanList` and `PlanDetails`).
   2. Fetch plan data from the backend using `planApi`.
 
-- Cart and Checkout:
+- Cart and Checkout: 
   1. Implement cart functionality with `CartContext` and `Cart` component.
   2. Integrate Stripe checkout in `CheckoutPage`.
 
-- Dashboards:
+- Dashboards:  
   1. Build `SuperAdminDashboard` and `AdminDashboard` components.
   2. Implement logic for managing users and plans.
 

@@ -8,6 +8,7 @@ import connectDB from "./config/db.js";
 import stripeService from "./stripeService.js"
 import userRoutes from "./routes/userRoutes.js"
 import transactionRoutes from "./routes/transactionRoutes.js"
+import subscriptionRoutes from './routes/subscriptionRoutes.js'
 
 dotenv.config()
 
@@ -24,8 +25,9 @@ app.use(cookieParser())     // perform crud on cookies data (from client)
 
 // routes
 app.use('/stripe', stripeService)
-app.use("/api/users", userRoutes)
+app.use('/api/users', userRoutes)
 app.use('/api/transactions', transactionRoutes)
+app.use('/api/subscriptions', subscriptionRoutes)
 
 // connect to MongoDB (local)
 connectDB()

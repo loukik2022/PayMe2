@@ -40,10 +40,10 @@ project-root/
 │   │   │   ├── dashboard/
 │   │   │   │   └── AdminDashboard.jsx
 │   │   │   ├── transactions/
-│   │   │   │   ├── Cart.jsx
-│   │   │   │   └── transactionHistory.jsx
+│   │   │   │   ├── Cart.jsx  # Later
+│   │   │   │   └── transactionHistory.jsx   #Later
 │   │   │   ├── Subscriptions/
-│   │   │   │   ├── SubscriptionList.jsx
+│   │   │   │   ├── SubscriptionList.jsx  
 │   │   │   │   └── SubscriptionDetails.jsx
 │   │   │   └── shared/
 │   │   │       ├── Navbar.jsx
