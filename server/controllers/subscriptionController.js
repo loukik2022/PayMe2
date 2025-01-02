@@ -19,7 +19,7 @@ const getAllSubscriptions = async (req, res) => {
 };
 
 const createSubscription = async (req, res) => {
-    const { planName, price, description, billingCycle, startDate, endDate, status } = req.body;
+    const { planName, price, description, billingCycle, startDate, endDate, status, features } = req.body;
 
     try {
         const newSubscription = new Subscription({
@@ -30,6 +30,7 @@ const createSubscription = async (req, res) => {
             billingCycle,
             startDate,
             endDate,
+            features,
         });
         
         await newSubscription.save();
@@ -78,6 +79,8 @@ const deleteSubscription = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 };
+
+// # TODO: add features, delete features, update features for single subscription   
 
 export {
     getAllSubscriptions,

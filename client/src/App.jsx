@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/loginPage';
-import Subscription from './pages/landingPage';
+import Subscriptions from './pages/landingPage';
 import './App.css';
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<h1>Welcome to PayMe!</h1>} />
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/landing" element={<Subscription />} />
+                <Route path="/landing" element={<Subscriptions />} />
                 {/* Other routes */}
             </Routes>
         </Router>

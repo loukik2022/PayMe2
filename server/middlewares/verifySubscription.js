@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 import { Subscription } from '../models/subscription.js'; 
 
 const checkPlanMissingFields = async (req, res, next) => {
-    const { planName, price, description, billingCycle, startDate, endDate, status } = req.body;
+    const { planName, price, billingCycle, startDate, endDate, status } = req.body;
 
     // Check for missing required fields
-    if (!planName || !price || !description || !billingCycle || !startDate || !endDate || !status) {
+    if (!planName || !price || !billingCycle || !startDate || !endDate || !status) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 

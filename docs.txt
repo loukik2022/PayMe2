@@ -149,21 +149,31 @@ Soltuin: spilt validation middleware, one for create, one for update, one for de
 - API Integration: #Done
   1. Test backend endpoints with Postman.
 
-- Plan Management: # TODO
+- Plan Management: #DONE
   1. Implement CRUD operations for SaaS plans (`src/controllers/planController.js` and `src/routes/planRoutes.js`).
 
 
 ### 3. Frontend Development
-- Routing:
+- Routing:  #Done (AdminPage Later)
   1. Set up React Router for navigation between pages (`LandingPage`, `LoginPage`, `AdminPage`, etc.).
 
-- Authentication:
-  1. Build registration and login forms (`src/components/auth/`).
+- Authentication: 
+  1. Build registration and login forms (`src/components/auth/`). #Done
   2. Manage user sessions using `AuthContext`.
 
-- Plan Display:
+- Plan Display:      #Done
   1. Create components to display plans (`PlanList` and `PlanDetails`).
   2. Fetch plan data from the backend using `planApi`.
+
+   Client-Side:
+   - Collect Payment Information: Gather payment details from the user.
+   - Create Payment Intent: Communicate with the server to create a payment intent.
+   - Handle Payment Confirmation: Confirm the payment on the client side using Stripe’s SDK.
+
+   Server-Side:
+   - Create Payment Intent: Create a payment intent using Stripe’s API.
+   - Handle Webhooks: Listen for events from Stripe to update transaction status.
+   - Store Transaction Details: Save transaction details in the database
 
 - Cart and Checkout: 
   1. Implement cart functionality with `CartContext` and `Cart` component.

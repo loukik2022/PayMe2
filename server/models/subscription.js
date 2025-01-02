@@ -31,6 +31,9 @@ const subscriptionSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    feature: {
+        type: [String],
+    }
 },
     {
         timestamps: true,
