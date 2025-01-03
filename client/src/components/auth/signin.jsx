@@ -21,10 +21,6 @@ const Signin = () => {
             const data = await signin(formData);
             console.log('Signin successful:', data);
 
-            // Store the token in localStorage
-            localStorage.setItem('accessToken', data.accessToken);
-            localStorage.setItem('refreshToken', data.refreshToken);
-
             navigate('/landing');
         } catch (err) {
             setError(err.message);

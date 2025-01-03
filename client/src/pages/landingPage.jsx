@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getALLSubcriptions } from '../api/subscriptionAPI.js'
-import { collectPayment } from "../api/transactionAPI.js";
+import { createPayment } from "../api/transactionAPI.js";
 
 const Subscriptions = () => {
   // hard-code subscription plans details (incase of failure)
@@ -51,14 +51,19 @@ const Subscriptions = () => {
   useEffect(() => {
     getALLSubcriptions()
       .then(plans => {
+
         // Extract only name, price, and description from plans
         const filteredPlans = plans.map(plan => ({
+          id: plan._id,
           name: plan.planName,
           price: plan.price,
-          description: plan.description,
           billingCycle: plan.billingCycle,
-          features: plan.features
+          description: plan.description || 'No description available',
+          features: plan.features || 'No features available'
         }));
+
+        filteredPlans.sort((a, b) => a.price - b.price);
+
         setPlans(filteredPlans);
       })
       .catch((error) => {
@@ -78,11 +83,12 @@ const Subscriptions = () => {
     return <div>No plans available.</div>;
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (id, e) => {
     e.preventDefault();
     console.log("Processing purchase...");
 
-    // collectPayment(plan.subcriptionId)
+    // send plan id
+    createPayment(id) 
   };
 
   return (
@@ -92,7 +98,7 @@ const Subscriptions = () => {
           <h2>{plan.name}</h2>
           <h3>{`${plan.price} / ${plan.billingCycle}`}</h3>
           <p>{plan.description}</p>
-          <button onClick={handleSubmit}>Get Started</button>
+          <button onClick={(e) => handleSubmit(plan.id, e)}>Get Started</button>
             <ul>
               {plan.features.map((feature, i) => (
                 <li key={i}>{feature}</li>
