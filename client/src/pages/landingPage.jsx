@@ -88,7 +88,7 @@ const Subscriptions = () => {
     console.log("Processing purchase...");
 
     // send plan id
-    createPayment(id) 
+    createPayment(id)
   };
 
   return (
@@ -99,11 +99,11 @@ const Subscriptions = () => {
           <h3>{`${plan.price} / ${plan.billingCycle}`}</h3>
           <p>{plan.description}</p>
           <button onClick={(e) => handleSubmit(plan.id, e)}>Get Started</button>
-            <ul>
-              {plan.features.map((feature, i) => (
-                <li key={i}>{feature}</li>
-              ))}
-            </ul>
+          <ul>
+            {plan.features.map((feature, i) => (
+              <li key={i}>{feature}</li>
+            ))}
+          </ul>
         </div>
       ))}
     </div>

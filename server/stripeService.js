@@ -6,7 +6,7 @@ const stripeService = express.Router();
 const domain = `http://localhost:5173/stripe`;
 
 stripeService.post('/create-checkout-session', async (req, res) => {
-    // use subscription db instead
+    // use subscription db instead to get plan info
     const prices = await stripe.prices.list({
         lookup_keys: [req.body.lookup_key],
         expand: ['data.product'],
@@ -31,7 +31,7 @@ stripeService.post('/create-checkout-session', async (req, res) => {
 stripeService.post('/create-portal-session', async (req, res) => {
     const { session_id } = req.body;
 
-    // console.log(session_id) // undefined -> need to activate billing from stripe dashboard
+    // console.log(session_id) // undefined -> need to activate billing from stripe dashboard first
 
     const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
 
