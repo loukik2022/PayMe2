@@ -1,6 +1,4 @@
 # PayMe
-
-## Description
 PayMe is a web application that allows users to manage their subscriptions and transactions seamlessly. 
 
 ## Server-Side Features
@@ -54,8 +52,8 @@ PayMe is a web application that allows users to manage their subscriptions and t
 - The server API is available at `http://localhost:5000`.
 
 To test, use customer details:
-email: firstCustomer@example.com
-address: Next to Shop, 
+- email: firstCustomer@example.com
+- address: Next to Shop, 
          Hyderabad, TG, India
          502285
 
