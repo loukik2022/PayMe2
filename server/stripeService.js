@@ -1,16 +1,29 @@
-import { stripe } from "./config/stripeConfig.js";
 import express from 'express';
+import { stripe } from "./config/stripeConfig.js";
+import { 
+    handlePaid,
+    handlePaymentFailed,
+    handleTransactionUpdated
+} from "./controllers/stripeController.js";
+import { StripeMapping } from './models/stripeMapping.js';
+
 
 const stripeService = express.Router();
-
 const domain = `http://localhost:5173/stripe`;
 
+const subscription_to_product = async (subscriptionId) => {
+    const mapping = await StripeMapping.findOne({ subscriptionId: subscriptionId });
+    return mapping ? mapping.productId : null;
+};
+
 stripeService.post('/create-checkout-session', async (req, res) => {
-    // use subscription db instead to get plan info
-    const prices = await stripe.prices.list({
-        lookup_keys: [req.body.lookup_key],
-        expand: ['data.product'],
-    });
+    // get subscriptionId from client
+    const subscriptionId = req.body.paymentData;
+    const productId = await subscription_to_product(subscriptionId);
+
+    // get prices from stripe product
+    const product = await stripe.products.retrieve(productId);  
+    const prices = await stripe.prices.list({ product: product.id, });
 
     const session = await stripe.checkout.sessions.create({
         billing_address_collection: 'required',
@@ -25,7 +38,7 @@ stripeService.post('/create-checkout-session', async (req, res) => {
         cancel_url: `${domain}?canceled=true`,
     });
 
-    res.status(202).json({url: session.url})
+    res.status(202).json({ url: session.url })
 });
 
 stripeService.post('/create-portal-session', async (req, res) => {
@@ -41,73 +54,50 @@ stripeService.post('/create-portal-session', async (req, res) => {
         customer: checkoutSession.customer,
         return_url: returnUrl,
     });
-    
-    res.status(202).json({url: portalSession.url})
+
+    res.status(202).json({ url: portalSession.url })
 });
 
 
-stripeService.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
-    let event = req.body;
-    // Replace this endpoint secret with your endpoint's unique secret
-    // If you are testing with the CLI, find the secret by running 'stripe listen'
-    // If you are using an endpoint defined with the API or dashboard, look in your webhook settings
-    // at https://dashboard.stripe.com/webhooks
-    const endpointSecret = 'whsec_12345';
-    // Only verify the event if you have an endpoint secret defined.
-    // Otherwise use the basic event deserialized with JSON.parse
-    if (endpointSecret) {
-        // Get the signature sent by Stripe
-        const signature = req.headers['stripe-signature'];
-        try {
-            event = stripe.webhooks.constructEvent(
-                req.body,
-                signature,
-                endpointSecret
-            );
-        } catch (err) {
-            console.log(`⚠️  Webhook signature verification failed.`, err.message);
-            return res.sendStatus(400);
+stripeService.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+    let event;
+    const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
+    const signature = req.headers['stripe-signature'];
+
+    try {
+        // console.log(Buffer.isBuffer(req.body)) // Must be true (because stripe want raw req.body not parsed)
+
+        event = stripe.webhooks.constructEvent(
+            req.body,
+            signature,
+            endpointSecret
+        );
+    } catch (err) {
+        console.error('Error constructing event:', err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    try {
+        switch (event.type) {
+            case 'invoice.paid':
+                await handlePaid(event.data.object);
+                break;
+            case 'invoice.payment_failed':
+                await handlePaymentFailed(event.data.object);
+                break;
+            // case 'invoice.updated':
+            //     await handleTransactionUpdated(event.data.object);
+            //     break;
         }
+
+        res.status(200).send('Event received');
+    } catch (err) {
+        console.error(`Error handling event: ${event.type}`, err.message);
+        res.status(500).send('Internal server error');
     }
-    let subscription;
-    let status;
-    // Handle the event
-    if (event.type === 'customer.subscription.trial_will_end') {    // active -> inactive
-        subscription = event.data.object;
-        status = subscription.status;
-        console.log(`Subscription status is ${status}.`);
-        // Then define and call a method to handle the subscription trial ending.
-        // handleSubscriptionTrialEnding(subscription);
-    } else if (event.type === 'customer.subscription.deleted') {    // active -> inactive
-        subscription = event.data.object;
-        status = subscription.status;
-        console.log(`Subscription status is ${status}.`);
-        // Then define and call a method to handle the subscription deleted.
-        // handleSubscriptionDeleted(subscriptionDeleted);
-    } else if (event.type === 'customer.subscription.created') {    // active (created)
-        subscription = event.data.object;
-        status = subscription.status;
-        console.log(`Subscription status is ${status}.`);
-        // Then define and call a method to handle the subscription created.
-        // handleSubscriptionCreated(subscription);
-    } else if (event.type === 'customer.subscription.updated') {    // active -> updated active (change subscription plan)
-        subscription = event.data.object;
-        status = subscription.status;
-        console.log(`Subscription status is ${status}.`);
-        // Then define and call a method to handle the subscription update.
-        // handleSubscriptionUpdated(subscription);
-    } else if (event.type === 'entitlements.active_entitlement_summary.updated') {      // change in subscription features/service
-        subscription = event.data.object;
-        console.log(`Active entitlement summary updated for ${subscription}.`);
-        // Then define and call a method to handle active entitlement summary updated
-        // handleEntitlementUpdated(subscription);
-    } else {
-        // Unexpected event type
-        console.log(`Unhandled event type ${event.type}.`);
-    }
-    // Return a 200 res to acknowledge receipt of the event
-    res.send();
 }
 );
+
+
 
 export default stripeService;

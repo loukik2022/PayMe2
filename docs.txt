@@ -153,6 +153,22 @@ Soltuin: spilt validation middleware, one for create, one for update, one for de
   1. Implement CRUD operations for SaaS plans (`src/controllers/planController.js` and `src/routes/planRoutes.js`).
 
 
+- Stripe Webhook: #Done
+
+Stripe CLI Login:
+account id: acct_1OCIWZSBvryMQKIB
+
+./stripe login --interactive  
+(Enter API key)
+
+./stripe listen --forward-to http://localhost:8000/stripe/webhook    (difficulty: wrong url - client used prev)
+
+
+difficulty: now when user login, a user id is created (or existing user id) is used. but when payment is done using stripe, a customer id (from invoice) is created by stripe invoice which is different from user id. But to simplify the logic and want both to same which is not possible. do not code. tell me widely use strategies to solve this
+-> Maintain a mapping table in your database to link your internal id with Stripe's id. 
+-> Stripe IDs (customerId, invoiceId, and productId) <-> (userId, transactionId, and subscriptionId):
+
+
 ### 3. Frontend Development
 - Routing:  #Done (AdminPage Later)
   1. Set up React Router for navigation between pages (`LandingPage`, `LoginPage`, `AdminPage`, etc.).

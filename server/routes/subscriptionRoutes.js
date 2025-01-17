@@ -13,9 +13,13 @@ const router = Router();
 router.get('/allSubscriptions', getAllSubscriptions);
 
 // admin
-router.post('/create', [checkPlanMissingFields, checkToken, checkRole('admin')], createSubscription);
-router.patch('/:subscriptionId', [checkSubscriptionExists, checkToken, checkRole('admin')], updateSubscription);
-router.delete('/:subscriptionId', [checkSubscriptionExists, checkToken, checkRole('admin')], deleteSubscription);
+// router.post('/create', createSubscription);
+// router.patch('/:subscriptionId', [checkSubscriptionExists, checkToken, checkRole('admin')], updateSubscription);
+// router.delete('/:subscriptionId', [checkSubscriptionExists, checkToken, checkRole('admin')], deleteSubscription);
 
+
+router.post('/create', createSubscription);
+router.patch('/:subscriptionId', updateSubscription);
+router.delete('/:subscriptionId', deleteSubscription);
 
 export default router;  

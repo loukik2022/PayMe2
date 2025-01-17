@@ -1,4 +1,5 @@
 import { Subscription } from "../models/subscription.js";
+import { stripeSubscriptionCreate, stripeSubscriptionUpdate } from "./stripeController.js";
 
 /*
 - Get all subscription info
@@ -20,7 +21,7 @@ const getAllSubscriptions = async (req, res) => {
 
 const createSubscription = async (req, res) => {
     const { planName, price, description, billingCycle, startDate, endDate, status, features } = req.body;
-
+    
     try {
         const newSubscription = new Subscription({
             planName,
@@ -28,12 +29,15 @@ const createSubscription = async (req, res) => {
             description,
             status,
             billingCycle,
-            startDate,
-            endDate,
-            features,
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            features: features
         });
         
         await newSubscription.save();
+
+        stripeSubscriptionCreate(newSubscription);
+
         return res.status(201).json(newSubscription);
     } catch (error) {
         return res.status(500).json({ error: error.message });
@@ -58,6 +62,9 @@ const updateSubscription = async (req, res) => {
         }
 
         await subscription.save();
+
+        stripeSubscriptionUpdate(updates);
+
         return res.status(200).json(subscription);
     } catch (error) {
         return res.status(500).json({ error: error.message });
@@ -79,8 +86,6 @@ const deleteSubscription = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 };
-
-// # TODO: add features, delete features, update features for single subscription   
 
 export {
     getAllSubscriptions,

@@ -15,8 +15,11 @@ dotenv.config()
 const app = express()
 
 // middlewares
-app.use(express.json())                                 
-app.use(express.urlencoded({extended: true}))           
+app.use((req, res, next) => {   // Conditional middleware to skip parsing for specific routes
+    if (req.originalUrl === "/stripe/webhook") next(); 
+    else express.json()(req, res, next); 
+});
+app.use(express.urlencoded({ extended: true }))
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true       // allow cross-origin credentials stored in cookies (JWT authentication)
@@ -31,11 +34,11 @@ app.use('/api/subscriptions', subscriptionRoutes)
 
 // connect to MongoDB (local)
 connectDB()
-.then(() => {
-    app.listen(process.env.PORT || 8000, () => {
-        console.log(`Server is running at @ http://localhost:${process.env.PORT}/api/users/signup`);
+    .then(() => {
+        app.listen(process.env.PORT || 8000, () => {
+            console.log(`Server is running at @ http://localhost:${process.env.PORT}/api/users/signup`);
+        })
     })
-})
-.catch((err) => {
-    console.log("MONGO DB connection failed !!! ", err);
-})
+    .catch((err) => {
+        console.log("MONGO DB connection failed !!! ", err);
+    })

@@ -15,6 +15,4 @@ const checkUserExists = async (req, res, next) => {
     next();
 };
 
-export {
-    checkUserExists
-}
+export { checkUserExists };

@@ -11,7 +11,7 @@ const CancelPage = () => {
             {canceled === 'true' && (
                 <p>Please try other payment methods</p>
             )}
-            <button onClick={() => window.location.href = "/"}>Return to Home</button>
+            <button onClick={() => window.location.href = "/landing"}>Browse other plans</button>
         </div>
     );
 };

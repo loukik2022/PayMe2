@@ -6,6 +6,7 @@ const Subscriptions = () => {
   // hard-code subscription plans details (incase of failure)
   let defaultPlans = [
     {
+      id: 1,
       name: "Basic Plan",
       price: "₹10,000",
       billingCycle: "monthly",
@@ -18,6 +19,7 @@ const Subscriptions = () => {
       ],
     },
     {
+      id: 2,
       name: "Standard Plan",
       price: "₹1,00,0000",
       billingCycle: "yearly",
@@ -31,6 +33,7 @@ const Subscriptions = () => {
       ],
     },
     {
+      id: 3,
       name: "Premium Plan",
       price: "₹25,00,000",
       billingCycle: "yearly",
