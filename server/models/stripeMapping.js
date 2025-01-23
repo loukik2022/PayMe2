@@ -3,26 +3,23 @@ import mongoose from 'mongoose';
 const stripeSchema = new mongoose.Schema({
         // Internal user ID, mapped to Stripe's customer ID
         userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User', 
+            type: String,
         },
         customerId: {
             type: String, 
         },
         
-        // Internal transaction ID, mapped to Stripe's invoice ID
+        // Internal transaction ID, mapped to Stripe's session ID
         transactionId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Transaction', 
+            type: String,
         },
-        invoiceId: {
+        sessionId: {
             type: String, 
         },
         
         // Internal subscription ID, mapped to Stripe's product ID
         subscriptionId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Subscription', 
+            type: String,
         },
         productId: {
             type: String,

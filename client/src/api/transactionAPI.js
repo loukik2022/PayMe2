@@ -4,9 +4,18 @@ const API_URL = 'http://localhost:8000/stripe';
 
 const createPayment = async (paymentData) => {
   try {
-    const response = await axios.post(`${API_URL}/create-checkout-session`, { paymentData: `${paymentData}` });
+    console.log(document.cookie);
+    const accessToken = document.cookie.split(';').find(c => c.trim().startsWith('accessToken')).split('=')[1]; // Extract the access token from cookies
 
-    console.log(response)
+    const response = await axios.post(`${API_URL}/create-checkout-session`, 
+        { paymentData }, 
+        { 
+            withCredentials: true,
+            headers: {
+                Authorization: `Bearer ${accessToken}` 
+            }
+        }
+    );
 
     const { url } = response.data;
 
@@ -18,10 +27,8 @@ const createPayment = async (paymentData) => {
 
 const manageBilling = async (sessionId) => {
   try {
-    const response = await axios.post(`${API_URL}/create-portal-session`, { session_id: `${sessionId}` });
+    const response = await axios.post(`${API_URL}/create-portal-session`, { session_id: `${sessionId}` }, { withCredentials: true });
 
-    console.log(response)
-    
     const { url } = response.data;
 
     window.location.href = url;
@@ -30,10 +37,11 @@ const manageBilling = async (sessionId) => {
   }
 }
 
-const confirmPayment = async (paymentIntentId) => {
+const confirmPayment = async (sessionId) => {
   try {
     // Confirm the payment intent status via backend
-    const response = await axios.post(`${API_URL}/confirm-payment`, { paymentIntentId });
+    const response = await axios.post(`${API_URL}/confirm-payment`, { session_id: `${sessionId}` }, { withCredentials: true });
+
     if (response.data.status === 'succeeded') {
       console.log("Payment confirmed:", response.data);
       // Handle success, e.g., display receipt

@@ -41,7 +41,7 @@ const signup = async (req, res) => {
     try {
         // Hash Password
         const hashedPassword = bcrypt.hashSync(password, 8);
-        
+
         if (!role) role = 'user';     // Default role
 
         // Create a new user
@@ -49,7 +49,7 @@ const signup = async (req, res) => {
             username,
             email,
             password: hashedPassword,
-            role: role 
+            role: role
         });
 
         // Save user to the database
@@ -94,14 +94,20 @@ const signin = async (req, res) => {
         user.refreshToken = refreshToken;
         await user.save();
 
+        // Set cookie with user ID or token
+        res.cookie('accessToken', accessToken, {
+            maxAge: 3600000,    // 1 hour
+        });
+        res.cookie('refreshToken', refreshToken, {
+            maxAge: 24 * 3600000, // 24 hour
+        });
+
         // Respond with user information and tokens
         res.status(200).send({
-            id: user._id,
+            userId: user._id,
             username: user.username,
             email: user.email,
             roles: user.role,
-            accessToken: accessToken,
-            refreshToken: refreshToken
         });
     } catch (err) {
         res.status(500).send({ message: err.message });
@@ -143,18 +149,18 @@ const refreshToken = (req, res) => {
         const newAccessToken = jwt.sign({ id: decoded.id }, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn: 864000 // 10 days
         });
-        
+
         // no need to send entire user info, already stored on client-side
         res.status(200).send({
-            accessToken: newAccessToken     
+            accessToken: newAccessToken
         });
     });
 };
 
 
-export { 
-    signup, 
-    signin, 
-    signout, 
+export {
+    signup,
+    signin,
+    signout,
     refreshToken
 }; 

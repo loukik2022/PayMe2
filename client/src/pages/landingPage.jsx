@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Cookies from 'js-cookie';
 import { getALLSubcriptions } from '../api/subscriptionAPI.js'
 import { createPayment } from "../api/transactionAPI.js";
 
@@ -86,12 +87,14 @@ const Subscriptions = () => {
     return <div>No plans available.</div>;
   }
 
-  const handleSubmit = async (id, e) => {
+  const handleSubmit = async (planId, e) => {
     e.preventDefault();
     console.log("Processing purchase...");
 
-    // send plan id
-    createPayment(id)
+    // send planID (client->backend)
+    createPayment({
+      planId: planId
+    })
   };
 
   return (

@@ -6,8 +6,7 @@ const API_URL = 'http://localhost:8000/api/subscriptions';
 
 const getALLSubcriptions = async () => {
   try {
-    const response = await axios.get(`${API_URL}/allSubscriptions`);
-    
+    const response = await axios.get(`${API_URL}/allSubscriptions`, { withCredentials: true });
     return response.data;
   } catch (error) {
     console.error('Error fetching subscriptions:', error);

@@ -13,7 +13,7 @@ const signup = async (userData) => {
 
 const signin = async (userData) => {
     try {
-        const response = await axios.post(`${API_URL}/signin`, userData);
+        const response = await axios.post(`${API_URL}/signin`, userData, { withCredentials: true });  
         return response.data; 
     } catch (error) {
         throw error.response.data; 

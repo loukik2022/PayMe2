@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { manageBilling } from '../api/transactionAPI';
+import { confirmPayment, manageBilling } from '../api/transactionAPI';
 
 const SuccessPage = () => {
     const [searchParams] = useSearchParams();
@@ -12,19 +12,20 @@ const SuccessPage = () => {
         const success = searchParams.get('success');
         const sessionId = searchParams.get('session_id');
 
+        confirmPayment(sessionId);
+
         if (success === 'true' && sessionId) {
             setSessionId(sessionId);
             setPaymentStatus('Successful!');
         } else {
             setPaymentStatus('Failed');
         }
-    }, [searchParams]);
+    }, []);
 
     const handleSubmit = async (sessionId, e) => {
         e.preventDefault();
         console.log("Manage subscription...");
-    
-        // send plan id
+        
         manageBilling(sessionId) 
       };
 

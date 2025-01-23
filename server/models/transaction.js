@@ -18,11 +18,10 @@ const transactionSchema = new mongoose.Schema({
     currency: {
         type: String,
         default: 'Rs',
-        required: true,
     },
     status: {
         type: String,
-        enum: ['pending', 'success', 'failed'],
+        enum: ['open', 'complete', 'expired', 'canceled'],
         required: true,
     },
     paymentMethod: {

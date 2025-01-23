@@ -23,6 +23,11 @@ Source: https://www.bezkoder.com/node-js-mongodb-auth-jwt/
   3. Implement `authMiddleware` to check user roles.
   4. Add error-handling middleware.
 
+local-storage vs session-storage vs cookie:
+- localStorage for persistent data across sessions.
+- sessionStorage for temporary data within a single session.
+- cookies for session management and data that needs to be sent to the server automatically
+
 Middlewares:
 To verify a Signup action, we need 2 functions:
 – check duplications for username and email
@@ -168,6 +173,18 @@ difficulty: now when user login, a user id is created (or existing user id) is u
 -> Maintain a mapping table in your database to link your internal id with Stripe's id. 
 -> Stripe IDs (customerId, invoiceId, and productId) <-> (userId, transactionId, and subscriptionId):
 
+challenge: how to send the userid and subscriptionid from client to backend (stripe) for payment (checkout)
+solution: use cookies, store details in backend and send it to client.
+now the browser (client) can send back the cookie to the backend in every request
+
+- responsibility of the backend to set cookies in the response before sending it to the client.
+- cookies expire when the user closes the session, that is, when she closes the browser
+- cookies are scopes to path and domain (cannot be accessed from any path using any domain, set CORS properly)
+response.headers["Set-Cookie"] = "myfirstcookie=somecookievalue"
+lookup in console using: document.cookie
+
+[IMP] -> do not forgot to set CORS properly in backend (backend->client)
+      -> do not forgot to send axios with credentials: true (in client)
 
 ### 3. Frontend Development
 - Routing:  #Done (AdminPage Later)
@@ -379,6 +396,11 @@ Cookie:
   - A `name=value` pair stored in a web browser.
   - Associated with a domain and may have an expiry date.
   - Automatically sent by the client to the server with HTTP requests.
+
+A cookie is a small piece of data stored in the user's browser, often used to track sessions, authenticate users, or store preferences.
+In Express:
+Backend sets cookies on the client’s browser.
+Client sends these cookies back to the server with every request.
 
 Token:
   - Json object with 3 componetns: header, payload, and signature, added by client to request 

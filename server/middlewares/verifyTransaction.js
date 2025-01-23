@@ -7,10 +7,10 @@
 */
 
 const checkTranMissingField = async (req, res, next) => {
-    const { userId, subscriptionId, amount, currency, status } = req.body;
+    const { userId, subscriptionId, amount, status } = req.body;
 
     // Check for missing required fields
-    if (!userId || !subscriptionId || !amount || !currency || !status) {
+    if (!userId || !subscriptionId || !amount || !status) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
