@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import Cookies from 'js-cookie';
 import { getALLSubcriptions } from '../api/subscriptionAPI.js'
 import { createPayment } from "../api/transactionAPI.js";
 
-const Subscriptions = () => {
+const SubscriptionPage = () => {
   // hard-code subscription plans details (incase of failure)
   let defaultPlans = [
     {
@@ -98,22 +97,27 @@ const Subscriptions = () => {
   };
 
   return (
-    <div className="subs-container">
-      {plans.map((plan, index) => (
-        <div key={index} className="sub-card">
-          <h2>{plan.name}</h2>
-          <h3>{`${plan.price} / ${plan.billingCycle}`}</h3>
-          <p>{plan.description}</p>
-          <button onClick={(e) => handleSubmit(plan.id, e)}>Get Started</button>
-          <ul>
-            {plan.features.map((feature, i) => (
-              <li key={i}>{feature}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
+    <div className="subscription-page">
+      <div className="container plans-grid">
+        {plans.map((plan, index) => (
+          <div key={index} className="plan-card">
+            <h2>{plan.name}</h2>
+            <h3>{`${plan.price} / ${plan.billingCycle}`}</h3>
+            <p>{plan.description}</p>
+            <ul>
+              {plan.features.map((feature, i) => (
+                <li key={i}>
+                  <i className="fas fa-check-circle"></i>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <button onClick={(e) => handleSubmit(plan.id, e)}>Get Started</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default Subscriptions;
+export default SubscriptionPage;

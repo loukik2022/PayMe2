@@ -31,7 +31,7 @@ const SuccessPage = () => {
 
     return (
         <div className="success-page">
-            <h1>Payment Status: {paymentStatus}</h1>
+            <h1 style={{ color: paymentStatus === 'Successful!' ? 'green' : 'red' }}>Subscription Payment {paymentStatus}</h1>
             <div>
                 <p>Thank you for using PayMe!</p>
             </div>

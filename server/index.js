@@ -59,7 +59,7 @@ app.use('/api/subscriptions', subscriptionRoutes)
 connectDB()
     .then(() => {
         app.listen(process.env.PORT || 8000, () => {
-            console.log(`Server is running at @ http://localhost:${process.env.PORT}/api/users/signup`);
+            console.log(`Server is running @ http://localhost:${process.env.PORT}/api/users/signup`);
         })
     })
     .catch((err) => {

@@ -1,14 +1,593 @@
-.subs-container {
-    display: flex;
-    justify-content: space-between; /* Distributes space between cards */
-    gap: 20px; /* Adds space between cards */
-    margin-top: 10%;
+/* ==========================================================================
+   CSS Variables & Global Styles
+   ========================================================================== */
+   :root {
+    /* Colors */
+    --bg-dark: #121212;
+    --bg-darker: #1e1e1e;
+    --text-light: #e0e0e0;
+    --text-lighter: #f0f0f0;
+    --accent-color: #2563eb;
+    --accent-hover: #1d4ed8;
+    --border-color: #333;
+    --logout-bg: #a02416;
+    --footer-bg: #1f1f1f;
+    
+    /* Sizing & Shadows */
+    --font-family: 'Inter', sans-serif;
+    --button-radius: 8px;
+    --card-radius: 12px;
+    --box-shadow-light: rgba(0, 0, 0, 0.4);
+    --box-shadow-medium: rgba(0, 0, 0, 0.5);
   }
   
-  .sub-card {
-    flex: 1; /* Each card will take up equal space */
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  body {
+    font-family: var(--font-family);
+    background: var(--bg-dark);
+    color: var(--text-light);
+    margin: 0;
+    padding: 0;
   }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  /* ==========================================================================
+     Layout & Containers
+     ========================================================================== */
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* ==========================================================================
+     Navbar
+     ========================================================================== */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: #1d1d1d;
+    padding: 10px 0;
+    color: #fff;
+  }
+  
+  .navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .logo-link {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .nav-links {
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-link {
+    margin-left: 20px;
+    font-size: 16px;
+    color: #fff;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #93c5fd;
+  }
+  
+  .logout-btn {
+    margin-left: 20px;
+    padding: 8px 16px;
+    background: var(--logout-bg);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .logout-btn:hover {
+    background: darkred;
+  }
+  
+  /* ==========================================================================
+     Hero Section
+     ========================================================================== */
+  .hero-section {
+    position: relative;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px; /* Offset for fixed navbar */
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .hero-content {
+    position: relative;
+    text-align: center;
+    color: #fff;
+    z-index: 1;
+    animation: fadeIn 1s ease-out;
+  }
+  
+  .hero-title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  }
+  
+  .hero-subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  }
+  
+  .cta-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 50px;
+    background: var(--accent-color);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    background: var(--accent-hover);
+  }
+  
+  /* ==========================================================================
+     Subscription 
+     ========================================================================== */
+  .subscription-page {
+    margin-top: 80px; 
+    padding: 30px 20px;
+    background: var(--bg-dark);
+  }
+  
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+  }
+  
+  .plan-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-darker);
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-radius);
+    padding: 40px;
+    box-shadow: 0 4px 6px var(--box-shadow-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.6);
+  }
+  
+  .plan-card h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-lighter);
+    margin-bottom: 20px;
+  }
+  
+  .plan-card h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #c0c0c0;
+    margin-bottom: 15px;
+  }
+  
+  .plan-card p {
+    font-size: 16px;
+    color: #c0c0c0;
+    margin-bottom: 20px;
+  }
+  
+  .plan-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+  }
+  
+  .plan-card ul li {
+    font-size: 16px;
+    color: #d0d0d0;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .plan-card ul li i {
+    color: #34b233;
+    margin-right: 10px;
+  }
+  
+  .plan-card button {
+    margin-top: auto;
+    width: 100%;
+    padding: 15px;
+    background: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: var(--button-radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .plan-card button:hover {
+    background: var(--accent-hover);
+  }
+  
+  /* ==========================================================================
+     Features Section
+     ========================================================================== */
+  .features-section {
+    padding: 4rem 0;
+    background: var(--bg-dark);
+    text-align: center;
+  }
+  
+  .section-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-lighter);
+  }
+  
+  .features-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+  }
+  
+  .feature-card {
+    background: var(--bg-darker);
+    padding: 2rem;
+    border-radius: 10px;
+    flex: 1 1 300px;
+    max-width: 350px;
+    box-shadow: 0 4px 6px var(--box-shadow-medium);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.7);
+  }
+  
+  .feature-icon {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+  }
+  
+  .feature-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+  }
+  
+  .feature-description {
+    font-size: 1rem;
+    color: #b0b0b0;
+  }
+  
+  /* ==========================================================================
+     Stats Section
+     ========================================================================== */
+  .stats-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 3rem 0;
+    margin-top: 10rem;
+    margin-bottom: 4rem;
+    text-align: center;
+  }
+  
+  .stats-number {
+    font-size: 2.8rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+  }
+
+  .stats-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .stats-label {
+    font-size: 1.1rem;
+    color: #b0b0b0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  /* ==========================================================================
+     Fun Section
+     ========================================================================== */
+  .fun-section {
+    padding: 3rem 0;
+    background: var(--bg-dark);
+    text-align: center;
+  }
+
+  .fun-button {
+    padding: 10px;
+    background: var(--accent-color);
+    border: none;
+    border-radius: var(--button-radius);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .fun-Button:hover {
+    background: var(--accent-hover);
+  }
+
+  .tenor-gif-embed {
+    width: 30%;
+    margin: auto;
+  }
+
+  /* ==========================================================================
+     Login Page & Forms
+     ========================================================================== */
+  .login-page {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--bg-dark)
+  }
+  
+  .login-card {
+    background: var(--bg-darker);
+    padding: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-radius);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .login-card h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-lighter);
+    margin-bottom: 30px;
+  }
+  
+  .login-btn {
+    margin-left: 20px;
+    padding: 8px 16px;
+    background: var(--accent-color);
+    border: none;
+    border-radius: var(--button-radius);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Toggle Button */
+  .toggle-button {
+    margin-top: 30px;
+    width: 100%;
+    padding: 15px;
+    background: #2a347a;
+    color: #fff;
+    border: none;
+    border-radius: var(--button-radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .toggle-button:hover {
+    background: #20275e;
+  }
+  
+  /* Forms */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: #d0d0d0;
+    margin-bottom: 8px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #444;
+    border-radius: var(--button-radius);
+    font-size: 16px;
+    color: var(--text-light);
+    background: var(--bg-darker);
+  }
+  
+  .form-button {
+    width: 100%;
+    padding: 15px;
+    background: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: var(--button-radius);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .form-button:hover {
+    background: var(--accent-hover);
+  }
+  
+  /* ==========================================================================
+     Success & Cancel Pages
+     ========================================================================== */
+  /* Success Page */
+  .success-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--bg-dark);
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .success-page h1 {
+    font-size: 2.5rem;
+    color: #3C4063;
+    margin-bottom: 20px;
+  }
+  
+  .success-page div p {
+    font-size: 1.125rem;
+    color: #bbb;
+    margin-bottom: 30px;
+  }
+  
+  .success-page button {
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .success-page button:hover {
+    background: var(--accent-hover);
+  }
+  
+  /* Cancel Page */
+  .cancel-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--bg-dark);
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .cancel-page h1 {
+    font-size: 2.5rem;
+    color: #dc2626;
+    margin-bottom: 20px;
+  }
+  
+  .cancel-page p {
+    font-size: 1.125rem;
+    color: #bbb;
+    margin-bottom: 30px;
+  }
+  
+  .cancel-page button {
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cancel-page button:hover {
+    background: var(--accent-hover);
+  }
+  
+  /* ==========================================================================
+     Footer
+     ========================================================================== */
+  .footer {
+    background: var(--footer-bg);
+    padding: 10px 0;
+    text-align: center;
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* ==========================================================================
+     Animations
+     ========================================================================== */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* ==========================================================================
+     Responsive Media Queries
+     ========================================================================== */
+  @media (max-width: 768px) {
+    .navbar-container {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .features-grid {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  

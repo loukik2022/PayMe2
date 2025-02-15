@@ -30,38 +30,43 @@ const Signup = ({ toggleForm }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>
+            <div className="form-group">
+                <label>Name</label>
                 <input
                     type="text"
-                    name="username"
-                    placeholder="Username"
-                    value={formData.username}
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
+                    placeholder="Enter your name"
                     required
                 />
             </div>
-            <div>
+            <div className="form-group">
+                <label>Email</label>
                 <input
                     type="email"
                     name="email"
-                    placeholder="Email"
                     value={formData.email}
                     onChange={handleChange}
+                    placeholder="Enter your email"
                     required
                 />
             </div>
-            <div>
+            <div className="form-group">
+                <label>Password</label>
                 <input
                     type="password"
                     name="password"
-                    placeholder="Password"
                     value={formData.password}
                     onChange={handleChange}
+                    placeholder="Enter your password"
                     required
                 />
             </div>
-            <button type="submit">Sign Up</button>
-            {error && <p>{error}</p>}
+            {error && <p className="error">{error}</p>}
+            <button type="submit" className="form-button">
+                Sign Up
+            </button>
         </form>
     );
 };

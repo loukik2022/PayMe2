@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signin } from '../../api/authApi';
 
-const Signin = () => {
+const Signin = ({ setIsLoggedIn }) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -21,7 +21,8 @@ const Signin = () => {
             const data = await signin(formData);
             console.log('Signin successful:', data);
 
-            navigate('/landing');
+            setIsLoggedIn(true);    
+            navigate('/subscription');
         } catch (err) {
             setError(err.message);
         }
@@ -29,28 +30,32 @@ const Signin = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>
+            <div className="form-group">
+                <label>Email</label>
                 <input
                     type="email"
                     name="email"
-                    placeholder="Email"
                     value={formData.email}
                     onChange={handleChange}
+                    placeholder="Enter your email"
                     required
                 />
             </div>
-            <div>
+            <div className="form-group">
+                <label>Password</label>
                 <input
                     type="password"
                     name="password"
-                    placeholder="Password"
                     value={formData.password}
                     onChange={handleChange}
+                    placeholder="Enter your password"
                     required
                 />
             </div>
-            <button type="submit">Sign In</button>
-            {error && <p>{error}</p>}
+            {error && <p className="error-message">{error}</p>}
+            <button type="submit" className="form-button">
+                Sign In
+            </button>
         </form>
     );
 };
