@@ -169,7 +169,7 @@ const createPortal = async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.body.session_id);
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: session.customer,
-      return_url: 'http://localhost:5173/landing',
+      return_url: 'http://localhost:5173/subscription',
     });
     res.status(202).json({ url: portalSession.url });
   } catch (error) {

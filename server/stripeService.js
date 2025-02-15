@@ -143,7 +143,7 @@ stripeService.post('/create-portal-session', async (req, res) => {
 
     const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
 
-    const returnUrl = `http://localhost:5173/landing`; // home page
+    const returnUrl = `http://localhost:5173/subscription`; // home page
 
     const portalSession = await stripe.billingPortal.sessions.create({
         customer: checkoutSession.customer,
